@@ -10,7 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Products {
-  id    Int     @id @default(autoincrement())
-  name  String?
+model Store {
+  id        String   @id @default(uuid())
+  name      String?
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
