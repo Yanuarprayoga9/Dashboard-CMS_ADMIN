@@ -1,4 +1,5 @@
 "use client ";
+import axios from "axios";
 import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from "@/hooks/use-store-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,21 +16,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 const FormSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name Is Required",
-  }),
+  name: z.string().min(1),
 });
 
 export const StoreModal = () => {
+  const storeModal = useStoreModal();
+  const [isLoading, setIsLoadng] = useState<boolean>(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
     },
   });
-  const storeModal = useStoreModal();
-  const onSubmit = () => {};
+
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    try {
+      setIsLoadng(true);
+      const response = await axios.post("/api/stores", values);
+      console.log(response?.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoadng(false);
+    }
+  };
+
   return (
     <Modal
       title="Create Store"
@@ -55,8 +68,14 @@ export const StoreModal = () => {
                 )}
               />
               <div className="w-full flex justify-end items-center pt-6 space-x-2">
-              <Button type="reset" onClick={storeModal.onClose} variant="outline">cancel</Button>
-              <Button type="submit" >Submit</Button>
+                <Button
+                  type="reset"
+                  onClick={storeModal.onClose}
+                  variant="outline"
+                >
+                  cancel
+                </Button>
+                <Button type="submit">Submit</Button>
               </div>
             </form>
           </Form>
