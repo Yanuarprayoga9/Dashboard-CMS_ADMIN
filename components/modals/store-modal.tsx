@@ -54,7 +54,10 @@ export const StoreModal = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="mt-4">Submit</Button>
+              <div className="w-full flex justify-end items-center pt-6 space-x-2">
+              <Button type="reset" onClick={storeModal.onClose} variant="outline">cancel</Button>
+              <Button type="submit" >Submit</Button>
+              </div>
             </form>
           </Form>
         </div>
