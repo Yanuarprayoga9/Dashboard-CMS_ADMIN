@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Popover, PopoverContent } from "./ui/popover";
 import { Button } from "./ui/button";
-import { Check, ChevronsUpDown, Store as StoreIcon } from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle, Store as StoreIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -88,6 +88,15 @@ export const StoreSwicther = ({
                 </CommandItem>
               ))}
             </CommandGroup>
+            <CommandItem
+              onSelect={() => {
+                storeModal.onOpen();
+                setOpen(false);
+              }}
+              className=""
+            >
+              <PlusCircle className=" mr-2 h-5 w-5"/> Create store
+            </CommandItem>
             <CommandSeparator />
           </CommandList>
         </Command>
