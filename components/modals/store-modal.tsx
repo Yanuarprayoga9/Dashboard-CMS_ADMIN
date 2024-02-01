@@ -80,7 +80,7 @@ export const StoreModal = () => {
                   cancel
                 </Button>
                 <Button type="submit" disabled={isLoading}>
-                  Submit
+                  Continue
                 </Button>
               </div>
             </form>
