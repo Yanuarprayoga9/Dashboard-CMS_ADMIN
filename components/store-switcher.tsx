@@ -6,7 +6,12 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Popover, PopoverContent } from "./ui/popover";
 import { Button } from "./ui/button";
-import { Check, ChevronsUpDown, PlusCircle, Store as StoreIcon } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  PlusCircle,
+  Store as StoreIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -59,7 +64,7 @@ export const StoreSwicther = ({
           className={cn("w-[200px] justify-between", className)}
         >
           <StoreIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-          Current Store
+          {currentStore?.label}
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -95,7 +100,7 @@ export const StoreSwicther = ({
               }}
               className=""
             >
-              <PlusCircle className=" mr-2 h-5 w-5"/> Create store
+              <PlusCircle className=" mr-2 h-5 w-5" /> Create store
             </CommandItem>
             <CommandSeparator />
           </CommandList>
