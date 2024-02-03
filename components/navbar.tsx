@@ -17,9 +17,9 @@ const Navbar = async () => {
     <div>
       <div className="border-b">
         <div className="flex h-16 items-center px-4">
-          <StoreSwicther className="mr-auto" items={stores} />
+          <StoreSwicther className="mr-auto ml-8" items={stores} />
           <MainNav />
-          <div className="ml-auto flex items-center space-x-4">
+          <div className="ml-auto flex items-center space-x-4 mr-4">
             <UserButton afterSignOutUrl="/" />
           </div>
         </div>
