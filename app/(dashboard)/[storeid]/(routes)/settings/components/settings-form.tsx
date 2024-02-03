@@ -23,6 +23,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useParams, useRouter } from "next/navigation";
+import { ApiAlert } from "@/components/ui/api-alert";
+import { useOrigin } from "@/hooks/use-origin";
 const SettinggsSchema = z.object({
   name: z.string().min(1, {
     message: "name must be at least 1 character",
@@ -35,6 +37,7 @@ interface SettingsFormProps {
 export const SettingForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin()
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsloading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof SettinggsSchema>>({
@@ -90,7 +93,7 @@ export const SettingForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       </div>
       <Separator className="mr-20 mt-4 " />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mb-4">
           <div className="grid grid-cols-3 pt-6">
             <FormField
               control={form.control}
@@ -115,6 +118,12 @@ export const SettingForm: React.FC<SettingsFormProps> = ({ initialData }) => {
           </Button>
         </form>
       </Form>
+      <Separator/>
+      <ApiAlert
+      title="NEXT_APP_PUBLIC_API_URL"
+      description={`${origin}/api/${params.storeId}`}
+      variant="public"
+      />
     </>
   );
 };
