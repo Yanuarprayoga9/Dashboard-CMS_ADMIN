@@ -26,23 +26,34 @@ import { useParams, useRouter } from "next/navigation";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 const SettinggsSchema = z.object({
-  name: z.string().min(1, {
-    message: "name must be at least 1 character",
+  label: z.string().min(1, {
+    message: "label must be at least 1 character",
+  }),
+  imageUrl: z.string().min(1, {
+    message: "image is required",
   }),
 });
 
 interface BillboardsFormProps {
   initialData: Store;
 }
-export const BillboardsForm: React.FC<BillboardsFormProps> = ({ initialData }) => {
+export const BillboardsForm: React.FC<BillboardsFormProps> = ({
+  initialData,
+}) => {
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin()
+  const origin = useOrigin();
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsloading] = useState<boolean>(false);
+
+  const title = initialData ? "Edit billboard " : "Create billboard";
+  const description = initialData ? "Edit a billboard " : "Create a billboard";
+  const toastMessage = initialData ? "Billboard created" : "Billboard updated";
+  const action = initialData ? "Save Changes" : "Create";
+
   const form = useForm<z.infer<typeof SettinggsSchema>>({
     resolver: zodResolver(SettinggsSchema),
-    defaultValues: initialData,
+    defaultValues: initialData || null,
   });
   const onSubmit = async (values: z.infer<typeof SettinggsSchema>) => {
     try {
@@ -68,9 +79,9 @@ export const BillboardsForm: React.FC<BillboardsFormProps> = ({ initialData }) =
       setIsloading(true);
       await axios.delete(`/api/stores/${params.storeId}`);
       router.refresh();
-      toast.success("Store deleted");
+      toast.success(toastMessage);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error("Make sure you removed all products and category first.");
     } finally {
       setIsloading(false);
@@ -86,10 +97,16 @@ export const BillboardsForm: React.FC<BillboardsFormProps> = ({ initialData }) =
         loading={isLoading}
       />
       <div className="flex items-center justify-between">
-        <Heading title="Billboards" descriprtion="Manage store preferences" />
-        <Button variant="destructive" size="icon" onClick={() => setOpen(true)}>
-          <Trash className="h-4 w-4" />
-        </Button>
+        <Heading title={title} descriprtion={description} />
+        {initialData ? (
+          <Button
+            variant="destructive"
+            size="icon"
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        ) : null}
       </div>
       <Separator className="mr-20 mt-4 " />
       <Form {...form}>
@@ -97,13 +114,13 @@ export const BillboardsForm: React.FC<BillboardsFormProps> = ({ initialData }) =
           <div className="grid grid-cols-3 pt-6">
             <FormField
               control={form.control}
-              name="name"
+              name="label"
               disabled={isLoading}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Label</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoading} placeholder="" {...field} />
+                    <Input disabled={isLoading} placeholder="type your label here.." {...field} />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -114,16 +131,11 @@ export const BillboardsForm: React.FC<BillboardsFormProps> = ({ initialData }) =
             />
           </div>
           <Button type="submit" disabled={isLoading}>
-            Save Changes
+            {action}
           </Button>
         </form>
       </Form>
-      <Separator/>
-      <ApiAlert
-      title="NEXT_APP_PUBLIC_API_URL"
-      description={`${origin}/api/${params.storeId}`}
-      variant="public"
-      />
+      <Separator />
     </>
   );
 };
