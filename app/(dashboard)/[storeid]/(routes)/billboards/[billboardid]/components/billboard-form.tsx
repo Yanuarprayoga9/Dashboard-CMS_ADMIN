@@ -1,141 +1,158 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Store } from "@prisma/client";
-import { Trash } from "lucide-react";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+"use client"
 
+import * as z from "zod"
+import axios from "axios"
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
+import { Trash } from "lucide-react"
+import { Billboard } from "@prisma/client"
+import { useParams, useRouter } from "next/navigation"
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { useParams, useRouter } from "next/navigation";
-import { ApiAlert } from "@/components/ui/api-alert";
-import { useOrigin } from "@/hooks/use-origin";
-const SettinggsSchema = z.object({
-  label: z.string().min(1, {
-    message: "label must be at least 1 character",
-  }),
-  imageUrl: z.string().min(1, {
-    message: "image is required",
-  }),
+} from "@/components/ui/form"
+import { Separator } from "@/components/ui/separator"
+import { Heading } from "@/components/ui/heading"
+import { AlertModal } from "@/components/modals/alert-modal"
+import {ImageUpload} from "@/components/ui/image-upload"
+
+const formSchema = z.object({
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
 });
 
-interface BillboardsFormProps {
-  initialData: Store;
-}
-export const BillboardsForm: React.FC<BillboardsFormProps> = ({
-  initialData,
+type BillboardFormValues = z.infer<typeof formSchema>
+
+interface BillboardFormProps {
+  initialData: Billboard | null;
+};
+
+export const BillboardForm: React.FC<BillboardFormProps> = ({
+  initialData
 }) => {
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
-  const [open, setOpen] = useState<boolean>(false);
-  const [isLoading, setIsloading] = useState<boolean>(false);
 
-  const title = initialData ? "Edit billboard " : "Create billboard";
-  const description = initialData ? "Edit a billboard " : "Create a billboard";
-  const toastMessage = initialData ? "Billboard created" : "Billboard updated";
-  const action = initialData ? "Save Changes" : "Create";
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof SettinggsSchema>>({
-    resolver: zodResolver(SettinggsSchema),
-    defaultValues: initialData || null,
+  const title = initialData ? 'Edit billboard' : 'Create billboard';
+  const description = initialData ? 'Edit a billboard.' : 'Add a new billboard';
+  const toastMessage = initialData ? 'Billboard updated.' : 'Billboard created.';
+  const action = initialData ? 'Save changes' : 'Create';
+
+  const form = useForm<BillboardFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData || {
+      label: '',
+      imageUrl: ''
+    }
   });
-  const onSubmit = async (values: z.infer<typeof SettinggsSchema>) => {
+
+  const onSubmit = async (data: BillboardFormValues) => {
     try {
-      setIsloading(true);
-      const validatedFields = SettinggsSchema.safeParse(values);
-      if (!validatedFields.success) toast.error("Invalid fields");
-      const response = await axios.patch(`/api/stores/${initialData.id}`, {
-        ...values,
-      });
+      setLoading(true);
+      if (initialData) {
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
       router.refresh();
-      console.log(response.data);
-      toast.success(`Success update store`);
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      router.push(`/${params.storeId}/billboards`);
+      toast.success(toastMessage);
+    } catch (error: any) {
+      toast.error('Something went wrong.');
     } finally {
-      setIsloading(false);
+      setLoading(false);
     }
   };
 
   const onDelete = async () => {
     try {
-      setIsloading(true);
-      await axios.delete(`/api/stores/${params.storeId}`);
+      setLoading(true);
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
-      toast.success(toastMessage);
-    } catch (error) {
-      console.log(error);
-      toast.error("Make sure you removed all products and category first.");
+      router.push(`/${params.storeId}/billboards`);
+      toast.success('Billboard deleted.');
+    } catch (error: any) {
+      toast.error('Make sure you removed all categories using this billboard first.');
     } finally {
-      setIsloading(false);
+      setLoading(false);
       setOpen(false);
     }
-  };
+  }
+
   return (
     <>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={isLoading}
-      />
-      <div className="flex items-center justify-between">
+    <AlertModal 
+      isOpen={open} 
+      onClose={() => setOpen(false)}
+      onConfirm={onDelete}
+      loading={loading}
+    />
+     <div className="flex items-center justify-between">
         <Heading title={title} descriprtion={description} />
-        {initialData ? (
+        {initialData && (
           <Button
+            disabled={loading}
             variant="destructive"
-            size="icon"
+            size="sm"
             onClick={() => setOpen(true)}
           >
             <Trash className="h-4 w-4" />
           </Button>
-        ) : null}
+        )}
       </div>
-      <Separator className="mr-20 mt-4 " />
+      <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mb-4">
-          <div className="grid grid-cols-3 pt-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Background image</FormLabel>
+                  <FormControl>
+                    <ImageUpload 
+                      value={field.value ? [field.value] : []} 
+                      disabled={loading} 
+                      onChange={(url) => field.onChange(url)}
+                      onRemove={() => field.onChange('')}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="label"
-              disabled={isLoading}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Label</FormLabel>
                   <FormControl>
-                    <Input disabled={isLoading} placeholder="type your label here.." {...field} />
+                    <Input disabled={loading} placeholder="Billboard label" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <Button type="submit" disabled={isLoading}>
+          <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   );
 };
