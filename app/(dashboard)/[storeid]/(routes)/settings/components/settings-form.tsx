@@ -85,7 +85,7 @@ export const SettingForm: React.FC<SettingsFormProps> = ({ initialData }) => {
         onConfirm={onDelete}
         loading={isLoading}
       />
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ml-4">
         <Heading title="Settings" descriprtion="Manage store preferences" />
         <Button variant="destructive" size="icon" onClick={() => setOpen(true)}>
           <Trash className="h-4 w-4" />
