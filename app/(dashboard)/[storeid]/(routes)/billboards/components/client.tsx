@@ -21,24 +21,29 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
 
   const API_BILLBOARD_ITEMS: ApiAlertProps[] = [
     {
-      title: "CREATE BILLBOARD",
+      title: "GET",
       description: `${origin}/api/${params.storeId}/billboards`,
-      variant: "admin",
+      variant: "public",
     },
     {
-      title: "UPDATE BILLBOARD",
-      description: `${origin}/api/${params.storeId}/billboards/${params.billboardid}`,
-      variant: "admin",
+      title: "GET BY ID",
+      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      variant: "public",
     },
     {
-      title: "CREATE BILLBOARD",
+      title: "POST",
       description: `${origin}/api/${params.storeId}/billboards`,
-      variant: "admin",
+      variant: "public",
     },
     {
-      title: "CREATE BILLBOARD",
-      description: `${origin}/api/${params.storeId}/billboards`,
-      variant: "admin",
+      title: "PATCH",
+      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      variant: "public",
+    },
+    {
+      title: "DELETE",
+      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      variant: "public",
     },
   ];
   return (
