@@ -8,6 +8,8 @@ import { Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { columns } from "./columns";
+import { ApiList } from "@/components/ui/api-list";
+import { ApiAlertProps } from "@/components/ui/api-alert";
 
 interface BillboardCLientProps {
   data: Billboard[];
@@ -16,6 +18,29 @@ interface BillboardCLientProps {
 export const BillboardClient = ({ data }: BillboardCLientProps) => {
   const router = useRouter();
   const params = useParams();
+
+  const API_BILLBOARD_ITEMS: ApiAlertProps[] = [
+    {
+      title: "CREATE BILLBOARD",
+      description: `${origin}/api/${params.storeId}/billboards`,
+      variant: "admin",
+    },
+    {
+      title: "UPDATE BILLBOARD",
+      description: `${origin}/api/${params.storeId}/billboards/${params.billboardid}`,
+      variant: "admin",
+    },
+    {
+      title: "CREATE BILLBOARD",
+      description: `${origin}/api/${params.storeId}/billboards`,
+      variant: "admin",
+    },
+    {
+      title: "CREATE BILLBOARD",
+      description: `${origin}/api/${params.storeId}/billboards`,
+      variant: "admin",
+    },
+  ];
   return (
     <>
       <div className="flex items-center justify-between">
@@ -33,7 +58,14 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
       </div>
       <Separator />
       <div className="py-10">
-        <DataTable columns={columns} data={data}/>
+        <DataTable columns={columns} data={data} />
+      </div>
+      <Heading title="API BILLBOARD" descriprtion="API calls for Billboard" />
+      <Separator />
+      <div className="py-6">
+        <ApiList 
+        data={API_BILLBOARD_ITEMS}
+        />
       </div>
     </>
   );
