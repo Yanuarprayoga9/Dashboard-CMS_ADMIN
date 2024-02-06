@@ -65,22 +65,22 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuLabel className="font-semibold text-center">
           Actions
         </DropdownMenuLabel>
-        <Separator />
+        <Separator
+        className="font-bold"
+        />
         <DropdownMenuItem
           onClick={() => onCopy(data.id)}
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer mt-2"
         >
           <div className="flex items-center ml-2 text-sm mb-2">
             <Copy className="mr-2 h-4 w-4" /> Copy id
           </div>
         </DropdownMenuItem>
-        <Separator />
         <DropdownMenuItem onClick={onUpdate} className="hover:cursor-pointer">
           <div className="flex items-center ml-2 text-sm mb-2">
             <Edit className="mr-2 h-4 w-4" /> Update
           </div>
         </DropdownMenuItem>
-        <Separator />
         <DropdownMenuItem
           onClick={() => setOpen(true)}
           className="hover:cursor-pointer"
