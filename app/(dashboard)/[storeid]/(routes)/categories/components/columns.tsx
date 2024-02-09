@@ -1,45 +1,32 @@
-"use client";
+"use client"
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import CellAction from "./cell-action";
+import { ColumnDef } from "@tanstack/react-table"
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type BillboardColumns = {
-  id: string;
-  label: string;
+import { CellAction } from "./cell-action"
+
+export type CategoryColumn = {
+  id: string
+  name: string;
+  billboardLabel: string;
   createdAt: string;
-  imageUrl: string;
-};
+}
 
-export const columns: ColumnDef<BillboardColumns>[] = [
+export const columns: ColumnDef<CategoryColumn>[] = [
   {
-    accessorKey: "label",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Label
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "billboard",
+    header: "Billboard",
+    cell: ({ row }) => row.original.billboardLabel,
   },
   {
     accessorKey: "createdAt",
-    header: "created",
-  },
-  {
-    accessorKey: "imageUrl",
-    header: "Image Url",
+    header: "Date",
   },
   {
     id: "actions",
-    header:"actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellAction data={row.original} />
   },
 ];

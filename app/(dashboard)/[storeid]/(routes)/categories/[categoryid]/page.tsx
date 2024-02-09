@@ -1,31 +1,35 @@
 "use server";
 import React from "react";
-import { BillboardForm } from "./components/billboard-form";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { prismadb } from "@/lib/db";
+import { CategoryForm } from "./components/categories-form";
 
-const BllboardPage = async ({
+const CategoryPage = async ({
   params,
 }: {
-  params: { storeId: string; billboardid: string };
+  params: { storeId: string; categoryid: string };
 }) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
-  const billboard = await prismadb.billboard.findFirst({
+  const category = await prismadb.category.findFirst({
     where: {
-      id: params.billboardid,
+      id: params.categoryid,
       storeId: params.storeId,
     },
   });
-  console.log(billboard);
+  const billboards = await prismadb.billboard.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
   return (
     <div className="flex flex-col p-4">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardForm initialData={billboard} />
+        <CategoryForm billboards={billboards} initialData={category} />
       </div>
     </div>
   );
 };
 
-export default BllboardPage;
+export default CategoryPage;

@@ -3,46 +3,47 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { Billboard } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { columns } from "./columns";
+import { CategoryColumn, columns } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
 import { ApiAlertProps } from "@/components/ui/api-alert";
+import { useOrigin } from "@/hooks/use-origin";
 
-interface BillboardCLientProps {
-  data: Billboard[];
+interface CategoriesClientProps {
+  data: CategoryColumn[];
 }
 
-export const BillboardClient = ({ data }: BillboardCLientProps) => {
+export const CategoriesClient = ({ data }: CategoriesClientProps) => {
   const router = useRouter();
   const params = useParams();
+  const origin = useOrigin()
 
   const API_BILLBOARD_ITEMS: ApiAlertProps[] = [
     {
       title: "GET",
-      description: `${origin}/api/${params.storeId}/billboards`,
+      description: `${origin}/api/${params.storeId}/categories`,
       variant: "public",
     },
     {
       title: "GET BY ID",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      description: `${origin}/api/${params.storeId}/categories/{categoriesid}`,
       variant: "public",
     },
     {
       title: "POST",
-      description: `${origin}/api/${params.storeId}/billboards`,
+      description: `${origin}/api/${params.storeId}/categories`,
       variant: "admin",
     },
     {
       title: "PATCH",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      description: `${origin}/api/${params.storeId}/categories/{categoriesid}`,
       variant: "admin",
     },
     {
       title: "DELETE",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      description: `${origin}/api/${params.storeId}/categories/{categoriesid}`,
       variant: "admin",
     },
   ];
@@ -50,12 +51,12 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Blllboard (${data.length})`}
-          descriprtion="Manage billboards for your"
+          title={`Categories (${data.length})`}
+          descriprtion="Manage categories for your"
         />
         <Button
           onClick={() => {
-            router.push(`/${params.storeId}/billboards/new`);
+            router.push(`/${params.storeId}/categories/new`);
           }}
         >
           <Plus className="w-4 h-4" /> Add New
@@ -63,9 +64,9 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
       </div>
       <Separator />
       <div className="py-10">
-        <DataTable columns={columns} data={data} />
+        <DataTable searchKey="name" columns={columns} data={data} />
       </div>
-      <Heading title="API BILLBOARD" descriprtion="API calls for Billboard" />
+      <Heading title="API CATEGORIES" descriprtion="API calls for Category" />
       <Separator />
       <div className="py-6">
         <ApiList 

@@ -27,7 +27,7 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
     },
     {
       title: "GET BY ID",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      description: `${origin}/api/${params.storeId}/billboards/{billboardId}`,
       variant: "public",
     },
     {
@@ -37,12 +37,12 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
     },
     {
       title: "PATCH",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      description: `${origin}/api/${params.storeId}/billboards/{billboardId}`,
       variant: "admin",
     },
     {
       title: "DELETE",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardid}`,
+      description: `${origin}/api/${params.storeId}/billboards/{billboardId}`,
       variant: "admin",
     },
   ];
@@ -63,7 +63,7 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
       </div>
       <Separator />
       <div className="py-10">
-        <DataTable columns={columns} data={data} />
+        <DataTable searchKey="label" columns={columns} data={data} />
       </div>
       <Heading title="API BILLBOARD" descriprtion="API calls for Billboard" />
       <Separator />

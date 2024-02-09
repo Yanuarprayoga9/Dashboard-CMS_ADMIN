@@ -8,13 +8,13 @@ import { prismadb } from "@/lib/db";
 const BllboardPage = async ({
   params,
 }: {
-  params: { storeId: string; billboardid: string };
+  params: { storeId: string; billboardId: string };
 }) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
   const billboard = await prismadb.billboard.findFirst({
     where: {
-      id: params.billboardid,
+      id: params.billboardId,
       storeId: params.storeId,
     },
   });
