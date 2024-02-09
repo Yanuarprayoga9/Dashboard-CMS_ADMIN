@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { columns } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
 import { ApiAlertProps } from "@/components/ui/api-alert";
+import { useOrigin } from "@/hooks/use-origin";
 
 interface BillboardCLientProps {
   data: Billboard[];
@@ -18,7 +19,7 @@ interface BillboardCLientProps {
 export const BillboardClient = ({ data }: BillboardCLientProps) => {
   const router = useRouter();
   const params = useParams();
-
+  const origin = useOrigin()
   const API_BILLBOARD_ITEMS: ApiAlertProps[] = [
     {
       title: "GET",
