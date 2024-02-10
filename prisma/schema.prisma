@@ -59,7 +59,7 @@ model Size {
   value     String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Product   Product[]
+  product   Product[]
 
   @@index([storeId])
 }
@@ -72,6 +72,7 @@ model Color {
   value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  products   Product[]
 
   @@index([storeId])
 }
@@ -89,12 +90,11 @@ model Product {
   sizeId     String // Foreign Key to Size
   size       Size     @relation(fields: [sizeId], references: [id])
   colorId    String // Foreign Key to Color
-  // color       Color     @relation(fields: [colorId], references: [id])
-  // images      Image[]   // Relation to Image model
+  color       Color     @relation(fields: [colorId], references: [id])
   // orderItems  OrderItem[]   // Relation to Order model
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  Image      Image[]
+  image      Image[]
 
   @@index([storeId])
   @@index([categoryId])
