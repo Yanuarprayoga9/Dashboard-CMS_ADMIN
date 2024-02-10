@@ -7,39 +7,40 @@ import CellAction from "./cell-action";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type BillboardColumns = {
+export type SizeColumns = {
   id: string;
-  label: string;
+  name: string;
+  value: string;
   createdAt: string;
-  imageUrl: string;
 };
 
-export const columns: ColumnDef<BillboardColumns>[] = [
+export const columns: ColumnDef<SizeColumns>[] = [
   {
-    accessorKey: "label",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Label
+          Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
+    accessorKey: "value",
+    header: "Value",
+  },
+  {
     accessorKey: "createdAt",
     header: "created",
   },
-  {
-    accessorKey: "imageUrl",
-    header: "Image Url",
-  },
+
   {
     id: "actions",
-    header:"actions",
+    header: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

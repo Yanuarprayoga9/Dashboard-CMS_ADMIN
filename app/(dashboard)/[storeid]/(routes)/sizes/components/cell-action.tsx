@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { BillboardColumns } from "./columns";
+import { SizeColumns, } from "./columns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +16,9 @@ import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
 import { AlertModal } from "@/components/modals/alert-modal";
 import axios from "axios";
-import { redirect, useParams } from "next/navigation";
+import {  useParams } from "next/navigation";
 interface CellActionProps {
-  data: BillboardColumns;
+  data: SizeColumns;
 }
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const params = useParams();
@@ -30,10 +30,10 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
       setOpen(false);
       setLoading(true);
       const res = await axios.delete(
-        `/api/${params.storeId}/billboards/${data.id}`
+        `/api/${params.storeId}/sizes/${data.id}`
       );
       console.log(res);
-      toast.success("billboard deleted");
+      toast.success("Size deleted");
     } catch (error) {
       toast.error("Something went wrong");
       console.log(error);
@@ -43,10 +43,10 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
   };
   const onCopy = (id: any) => {
     navigator.clipboard.writeText(id);
-    toast.success("Billboard id copied to the clipboard");
+    toast.success("Size id copied to the clipboard");
   };
   const onUpdate =  () => {
-     window.location.assign(`/${params.storeId}/billboards/${data.id}`);
+     window.location.assign(`/${params.storeId}/sizes/${data.id}`);
   };
   return (
     <DropdownMenu>
