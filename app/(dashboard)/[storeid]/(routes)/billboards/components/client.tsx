@@ -51,7 +51,7 @@ export const BillboardClient = ({ data }: BillboardCLientProps) => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Blllboard (${data.length})`}
+          title={`Blllboards (${data.length})`}
           descriprtion="Manage billboards for your"
         />
         <Button
