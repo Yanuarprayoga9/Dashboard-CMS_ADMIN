@@ -3,6 +3,7 @@ import React from "react";
 import { BillboardClient } from "./components/client";
 import { prismadb } from "@/lib/db";
 import { format } from "date-fns";
+import { formatter } from "@/lib/utils";
 const ProductPage = async ({ params }: { params: { storeId: string } }) => {
   const products = await prismadb.product.findMany({
     where: {
@@ -20,10 +21,15 @@ const ProductPage = async ({ params }: { params: { storeId: string } }) => {
   console.log(products)
   const formattedData = products.map((data:any) => {
     return {
-      id:data.id,
-      label: data.label,
-      imageUrl: data.imageUrl,
-      createdAt: format(data.createdAt,"MMMM do, yyyy"),
+      id: data.id,
+      name: data.name,
+      isFeatured: data.isFeatured,
+      isArchived: data.isArchived,
+      price: formatter.format(data.price.toNumber()),
+      category: data.category.name,
+      size: data.size.name,
+      color: data.color.value,
+      createdAt: format(data.createdAt, 'MMMM do, yyyy'),
     };
   });
 
