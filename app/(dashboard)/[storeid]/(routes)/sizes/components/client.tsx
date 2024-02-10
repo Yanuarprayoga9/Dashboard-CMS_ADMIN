@@ -66,7 +66,7 @@ export const SizeClient = ({ data }: SizeClientProps) => {
       <div className="py-10">
         <DataTable searchKey="name" columns={columns} data={data} />
       </div>
-      <Heading title="API BILLBOARD" descriprtion="API calls for Sizes" />
+      <Heading title="API SIZES" descriprtion="API calls for Sizes" />
       <Separator />
       <div className="py-6">
         <ApiList 
