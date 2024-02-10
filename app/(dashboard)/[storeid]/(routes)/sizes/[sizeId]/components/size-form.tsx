@@ -61,7 +61,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/sizes/${params.billboardId}`, data);
+        await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data);
       } else {
         await axios.post(`/api/${params.storeId}/sizes`, data);
       }
