@@ -1,6 +1,6 @@
 "use server";
 import React from "react";
-import { BillboardClient } from "./components/client";
+import { SizeClient } from "./components/client";
 import { prismadb } from "@/lib/db";
 import { format } from "date-fns";
 const SizePage = async ({ params }: { params: { storeId: string } }) => {
@@ -16,8 +16,8 @@ const SizePage = async ({ params }: { params: { storeId: string } }) => {
   const formattedData = sizes.map((data:any) => {
     return {
       id:data.id,
-      label: data.label,
-      imageUrl: data.imageUrl,
+      name: data.name,
+      value: data.value,
       createdAt: format(data.createdAt,"MMMM do, yyyy"),
     };
   });
@@ -25,7 +25,7 @@ const SizePage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <div className="flex-col px-4">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardClient data={formattedData} />
+        <SizeClient data={formattedData} />
       </div>
     </div>
   );
