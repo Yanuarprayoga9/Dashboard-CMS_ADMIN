@@ -1,10 +1,10 @@
 "use server";
 import React from "react";
-import { SizeClient } from "./components/client";
+import { ColorClient } from "./components/client";
 import { prismadb } from "@/lib/db";
 import { format } from "date-fns";
-const SizePage = async ({ params }: { params: { storeId: string } }) => {
-  const sizes = await prismadb.size.findMany({
+const ColorPage = async ({ params }: { params: { storeId: string } }) => {
+  const colors = await prismadb.color.findMany({
     where: {
       storeId: params.storeId,
     },
@@ -13,7 +13,7 @@ const SizePage = async ({ params }: { params: { storeId: string } }) => {
     },
   });
 
-  const formattedData = sizes.map((data:any) => {
+  const formattedData = colors.map((data:any) => {
     return {
       id:data.id,
       name: data.name,
@@ -25,10 +25,10 @@ const SizePage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <div className="flex-col px-4">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <SizeClient data={formattedData} />
+        <ColorClient data={formattedData} />
       </div>
     </div>
   );
 };
 
-export default SizePage;
+export default ColorPage;

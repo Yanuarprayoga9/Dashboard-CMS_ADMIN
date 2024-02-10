@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { SizeColumns, } from "./columns";
+import { ColorColumns, } from "./columns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import axios from "axios";
 import {  useParams } from "next/navigation";
 interface CellActionProps {
-  data: SizeColumns;
+  data: ColorColumns;
 }
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const params = useParams();
@@ -30,10 +30,10 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
       setOpen(false);
       setLoading(true);
       const res = await axios.delete(
-        `/api/${params.storeId}/sizes/${data.id}`
+        `/api/${params.storeId}/colors/${data.id}`
       );
       console.log(res);
-      toast.success("Size deleted");
+      toast.success("Color deleted");
     } catch (error) {
       toast.error("Something went wrong");
       console.log(error);
@@ -43,10 +43,10 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
   };
   const onCopy = (id: any) => {
     navigator.clipboard.writeText(id);
-    toast.success("Size id copied to the clipboard");
+    toast.success("Color id copied to the clipboard");
   };
   const onUpdate =  () => {
-     window.location.assign(`/${params.storeId}/sizes/${data.id}`);
+     window.location.assign(`/${params.storeId}/colors/${data.id}`);
   };
   return (
     <DropdownMenu>

@@ -1,20 +1,20 @@
 "use server";
 import React from "react";
-import { SizeForm } from "./components/size-form";
+import { SizeForm } from "./components/color-form";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { prismadb } from "@/lib/db";
 
-const BllboardPage = async ({
+const ColorPage = async ({
   params,
 }: {
-  params: { storeId: string; sizeId: string };
+  params: { storeId: string; colorId: string };
 }) => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
-  const size = await prismadb.size.findFirst({
+  const size = await prismadb.color.findFirst({
     where: {
-      id: params.sizeId,
+      id: params.colorId,
       storeId: params.storeId,
     },
   });
@@ -27,4 +27,4 @@ const BllboardPage = async ({
   );
 };
 
-export default BllboardPage;
+export default ColorPage;
