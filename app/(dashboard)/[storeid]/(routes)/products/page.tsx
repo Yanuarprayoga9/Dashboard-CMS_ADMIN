@@ -1,9 +1,10 @@
 "use server";
 import React from "react";
-import { BillboardClient } from "./components/client";
+import { ProductClient } from "./components/client";
 import { prismadb } from "@/lib/db";
 import { format } from "date-fns";
 import { formatter } from "@/lib/utils";
+import { ProductsColumns } from "./components/columns";
 const ProductPage = async ({ params }: { params: { storeId: string } }) => {
   const products = await prismadb.product.findMany({
     where: {
@@ -19,8 +20,8 @@ const ProductPage = async ({ params }: { params: { storeId: string } }) => {
     }
   });
   console.log(products)
-  const formattedData = products.map((data:any) => {
-    return {
+  const formattedData:ProductsColumns[] = products.map((data:any) => (
+     {
       id: data.id,
       name: data.name,
       isFeatured: data.isFeatured,
@@ -30,13 +31,13 @@ const ProductPage = async ({ params }: { params: { storeId: string } }) => {
       size: data.size.name,
       color: data.color.value,
       createdAt: format(data.createdAt, 'MMMM do, yyyy'),
-    };
-  });
+    }
+  ));
 
   return (
     <div className="flex-col px-4">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardClient data={formattedData} />
+        <ProductClient data={formattedData} />
       </div>
     </div>
   );

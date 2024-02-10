@@ -12,11 +12,11 @@ import { ApiList } from "@/components/ui/api-list";
 import { ApiAlertProps } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 
-interface BillboardCLientProps {
+interface ProductClientProps {
   data: Billboard[];
 }
 
-export const BillboardClient = ({ data }: BillboardCLientProps) => {
+export const ProductClient = ({ data }: ProductClientProps) => {
   const router = useRouter();
   const params = useParams();
   const origin = useOrigin()
