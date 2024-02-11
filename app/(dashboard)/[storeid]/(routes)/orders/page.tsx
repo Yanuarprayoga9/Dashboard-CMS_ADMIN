@@ -1,6 +1,6 @@
 "use server";
 import React from "react";
-import { BillboardClient } from "./components/client";
+import { OrderClient } from "./components/client";
 import { prismadb } from "@/lib/db";
 import { formatter } from "@/lib/utils";
 import { format } from "date-fns";
@@ -38,7 +38,7 @@ const OrderPage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <div className="flex-col px-4">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardClient data={formattedOrders} />
+        <OrderClient data={formattedOrders} />
       </div>
     </div>
   );
