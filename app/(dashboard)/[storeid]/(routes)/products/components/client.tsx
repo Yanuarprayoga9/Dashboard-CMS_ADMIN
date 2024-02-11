@@ -23,27 +23,27 @@ export const ProductClient = ({ data }: ProductClientProps) => {
   const API_BILLBOARD_ITEMS: ApiAlertProps[] = [
     {
       title: "GET",
-      description: `${origin}/api/${params.storeId}/billboards`,
+      description: `${origin}/api/${params.storeId}/products`,
       variant: "public",
     },
     {
       title: "GET BY ID",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardId}`,
+      description: `${origin}/api/${params.storeId}/products/{productId}`,
       variant: "public",
     },
     {
       title: "POST",
-      description: `${origin}/api/${params.storeId}/billboards`,
+      description: `${origin}/api/${params.storeId}/products`,
       variant: "admin",
     },
     {
       title: "PATCH",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardId}`,
+      description: `${origin}/api/${params.storeId}/products/{productId}`,
       variant: "admin",
     },
     {
       title: "DELETE",
-      description: `${origin}/api/${params.storeId}/billboards/{billboardId}`,
+      description: `${origin}/api/${params.storeId}/products/{productId}`,
       variant: "admin",
     },
   ];
@@ -51,12 +51,12 @@ export const ProductClient = ({ data }: ProductClientProps) => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Blllboards (${data.length})`}
-          descriprtion="Manage billboards for your"
+          title={`Products (${data.length})`}
+          descriprtion="Manage products for your"
         />
         <Button
           onClick={() => {
-            router.push(`/${params.storeId}/billboards/new`);
+            router.push(`/${params.storeId}/products/new`);
           }}
         >
           <Plus className="w-4 h-4" /> Add New
@@ -64,9 +64,9 @@ export const ProductClient = ({ data }: ProductClientProps) => {
       </div>
       <Separator />
       <div className="py-10">
-        <DataTable searchKey="label" columns={columns} data={data} />
+        <DataTable searchKey="name" columns={columns} data={data} />
       </div>
-      <Heading title="API BILLBOARD" descriprtion="API calls for Billboard" />
+      <Heading title="API Products" descriprtion="API calls for Products" />
       <Separator />
       <div className="py-6">
         <ApiList 

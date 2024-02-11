@@ -1,31 +1,51 @@
-"use server";
-import React from "react";
-import { BillboardForm } from "./components/billboard-form";
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { prismadb } from "@/lib/db";
 
-const BllboardPage = async ({
+import { ProductForm } from "./components/product-form";
+
+const ProductPage = async ({
   params,
 }: {
-  params: { storeId: string; billboardId: string };
+  params: { productId: string; storeId: string };
 }) => {
-  const { userId } = auth();
-  if (!userId) redirect("/sign-in");
-  const billboard = await prismadb.billboard.findFirst({
+  const product = await prismadb.product.findUnique({
     where: {
-      id: params.billboardId,
+      id: params.productId,
+    },
+    include: {
+      image: true,
+    },
+  });
+
+  const categories = await prismadb.category.findMany({
+    where: {
       storeId: params.storeId,
     },
   });
-  console.log(billboard);
+
+  const sizes = await prismadb.size.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
+
+  const colors = await prismadb.color.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
+
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <BillboardForm initialData={billboard} />
+        <ProductForm
+          categories={categories}
+          colors={colors}
+          sizes={sizes}
+          initialData={product}
+        />
       </div>
     </div>
   );
 };
 
-export default BllboardPage;
+export default ProductPage;
