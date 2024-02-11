@@ -1,22 +1,26 @@
 "use client";
+
+import { Plus } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { Billboard } from "@prisma/client";
-import { Plus } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { columns } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
-import { ApiAlertProps } from "@/components/ui/api-alert";
+
+import { ProductColumn, columns } from "./columns";
 import { useOrigin } from "@/hooks/use-origin";
+import { ApiAlertProps } from "@/components/ui/api-alert";
 
-interface ProductClientProps {
-  data: Billboard[];
-}
+interface ProductsClientProps {
+  data: ProductColumn[];
+};
 
-export const ProductClient = ({ data }: ProductClientProps) => {
+export const ProductsClient: React.FC<ProductsClientProps> = ({
+  data
+}) => {
+
   const router = useRouter();
   const params = useParams();
   const origin = useOrigin()
@@ -49,31 +53,22 @@ export const ProductClient = ({ data }: ProductClientProps) => {
     },
   ];
   return (
-    <>
+    <> 
       <div className="flex items-center justify-between">
-        <Heading
-          title={`Products (${data.length})`}
-          descriprtion="Manage products for your"
-        />
-        <Button
-          onClick={() => {
-            router.push(`/${params.storeId}/products/new`);
-          }}
-        >
-          <Plus className="w-4 h-4" /> Add New
+        <Heading title={`Products (${data.length})`} descriprtion="Manage products for your store" />
+        <Button onClick={() => router.push(`/${params.storeId}/products/new`)}>
+          <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
       <Separator />
-      <div className="py-10">
-        <DataTable searchKey="name" columns={columns} data={data} />
-      </div>
-      <Heading title="API Products" descriprtion="API calls for Products" />
+      <DataTable searchKey="name" columns={columns} data={data} />
+      <Heading title="API" descriprtion="API Calls for Products" />
       <Separator />
       <div className="py-6">
         <ApiList 
         data={API_BILLBOARD_ITEMS}
         />
-      </div>
-    </>
+      </div>    </>
   );
 };
+

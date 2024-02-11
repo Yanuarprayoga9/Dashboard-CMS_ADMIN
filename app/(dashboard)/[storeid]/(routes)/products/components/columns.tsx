@@ -1,14 +1,11 @@
-"use client";
+"use client"
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { CellAction } from "./cell-action";
+import { ColumnDef } from "@tanstack/react-table"
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type ProductsColumns = {
-  id: string;
+import { CellAction } from "./cell-action"
+
+export type ProductColumn = {
+  id: string
   name: string;
   price: string;
   category: string;
@@ -17,22 +14,12 @@ export type ProductsColumns = {
   createdAt: string;
   isFeatured: boolean;
   isArchived: boolean;
-};
+}
 
-export const columns: ColumnDef<ProductsColumns>[] = [
+export const columns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: "Name",
   },
   {
     accessorKey: "isArchived",
@@ -60,12 +47,9 @@ export const columns: ColumnDef<ProductsColumns>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-x-2">
         {row.original.color}
-        <div
-          className="h-6 w-6 rounded-full border"
-          style={{ backgroundColor: row.original.color }}
-        />
+        <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: row.original.color }} />
       </div>
-    ),
+    )
   },
   {
     accessorKey: "createdAt",
@@ -73,6 +57,6 @@ export const columns: ColumnDef<ProductsColumns>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellAction data={row.original} />
   },
 ];
