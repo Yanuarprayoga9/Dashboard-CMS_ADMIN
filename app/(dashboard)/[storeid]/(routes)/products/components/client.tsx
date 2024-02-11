@@ -20,30 +20,31 @@ export const ProductClient = ({ data }: ProductClientProps) => {
   const router = useRouter();
   const params = useParams();
   const origin = useOrigin()
+  const entity = "products"
   const API_BILLBOARD_ITEMS: ApiAlertProps[] = [
     {
       title: "GET",
-      description: `${origin}/api/${params.storeId}/products`,
+      description: `${origin}/api/${params.storeId}/${entity}`,
       variant: "public",
     },
     {
       title: "GET BY ID",
-      description: `${origin}/api/${params.storeId}/products/{productId}`,
+      description: `${origin}/api/${params.storeId}/${entity}/{productId}`,
       variant: "public",
     },
     {
       title: "POST",
-      description: `${origin}/api/${params.storeId}/products`,
+      description: `${origin}/api/${params.storeId}/${entity}`,
       variant: "admin",
     },
     {
       title: "PATCH",
-      description: `${origin}/api/${params.storeId}/products/{productId}`,
+      description: `${origin}/api/${params.storeId}/${entity}/{productId}`,
       variant: "admin",
     },
     {
       title: "DELETE",
-      description: `${origin}/api/${params.storeId}/products/{productId}`,
+      description: `${origin}/api/${params.storeId}/${entity}/{productId}`,
       variant: "admin",
     },
   ];
