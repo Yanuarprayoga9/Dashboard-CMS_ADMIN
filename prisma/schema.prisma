@@ -19,6 +19,7 @@ model Store {
   sizes      Size[]      @relation("StoreToSize")
   colors     Color[]     @relation("StoreToColor")
   products   Product[]   @relation("StoreToProduct")
+  orders     Order[]       @relation("StoreToOrder")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
@@ -65,36 +66,37 @@ model Size {
 }
 
 model Color {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   storeId   String
-  store     Store    @relation("StoreToColor", fields: [storeId], references: [id])
+  store     Store     @relation("StoreToColor", fields: [storeId], references: [id])
   name      String
   value     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products   Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 
   @@index([storeId])
 }
 
 model Product {
-  id         String   @id @default(uuid())
+  id         String      @id @default(uuid())
   storeId    String // Foreign Key to Store
-  store      Store    @relation("StoreToProduct", fields: [storeId], references: [id])
+  store      Store       @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId String // Foreign Key to Category
-  category   Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name       String
   price      Decimal
-  isFeatured Boolean  @default(false)
-  isArchived Boolean  @default(false)
+  isFeatured Boolean     @default(false)
+  isArchived Boolean     @default(false)
   sizeId     String // Foreign Key to Size
-  size       Size     @relation(fields: [sizeId], references: [id])
+  size       Size        @relation(fields: [sizeId], references: [id])
   colorId    String // Foreign Key to Color
-  color       Color     @relation(fields: [colorId], references: [id])
+  color      Color       @relation(fields: [colorId], references: [id])
   // orderItems  OrderItem[]   // Relation to Order model
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  images      Image[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  images     Image[]
+  OrderItems  OrderItem[]
 
   @@index([storeId])
   @@index([categoryId])
@@ -114,24 +116,25 @@ model Image {
 }
 
 model Order {
-  id        String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
+  id         String      @id @default(uuid())
+  storeId    String // Foreign Key to Store
+  store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[] // Relation to OrderItem model
-  isPaid     Boolean   @default(false)
-  phone      String    @default("")
-  address    String    @default("")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@index([storeId])
 }
- // Intermediary for a many-to-many relationship
+
+// Intermediary for a many-to-many relationship
 model OrderItem {
   id        String  @id @default(uuid())
-  orderId   String  // Foreign Key to Order
+  orderId   String // Foreign Key to Order
   order     Order   @relation(fields: [orderId], references: [id])
-  productId String  // Foreign Key to Product
+  productId String // Foreign Key to Product
   product   Product @relation(fields: [productId], references: [id])
 
   @@index([orderId])
