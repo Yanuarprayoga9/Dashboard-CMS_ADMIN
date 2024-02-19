@@ -11,7 +11,6 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   const params = useParams();
-  console.log({isReady:params.isReady})
   const routes = [
     {
       href: `/${params.storeId}`,
