@@ -1,3 +1,4 @@
+"use server"
 import { CreditCard, DollarSign, Package } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -65,7 +66,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             <CardTitle>Overview</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <Overview data={graphRevenue} />
+            {/* <Overview data={graphRevenue} /> */}
           </CardContent>
         </Card>
       </div>
