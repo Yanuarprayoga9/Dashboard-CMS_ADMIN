@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react";
 
 export function MainNav({
   className,
@@ -11,7 +12,12 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   const params = useParams();
-
+  console.log({storeId:params.storeId})
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
   const routes = [
     {
       href: `/${params.storeId}`,
