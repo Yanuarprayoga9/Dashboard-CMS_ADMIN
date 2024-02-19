@@ -4,7 +4,6 @@ import Link from "next/link"
 import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react";
 
 export function MainNav({
   className,
@@ -12,12 +11,7 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   const params = useParams();
-  console.log({storeId:params.storeId})
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) return null;
+  console.log({isReady:params.isReady})
   const routes = [
     {
       href: `/${params.storeId}`,
@@ -63,7 +57,7 @@ export function MainNav({
 
   return (
     <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6 ", className)}
+      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
       {routes.map((route) => (
@@ -71,8 +65,8 @@ export function MainNav({
           key={route.href}
           href={route.href}
           className={cn(
-            'text-sm font-medium transition-colors hover:text-primary ',
-            route.active ? 'text-black font-bold border-b dark:text-white' : 'text-muted-foreground'
+            'text-sm font-medium transition-colors hover:text-primary',
+            route.active ? 'text-black dark:text-white' : 'text-muted-foreground'
           )}
         >
           {route.label}
